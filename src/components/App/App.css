@@ -1,4 +1,35 @@
+.app {
+  min-height: 100vh;
+  padding: 30px 20px;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.app__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
 .app__title {
-  margin-bottom: 30px;
+  margin: 0;
   font-size: 28px;
+}
+
+.app__content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .app__header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    text-align: center;
+  }
 }

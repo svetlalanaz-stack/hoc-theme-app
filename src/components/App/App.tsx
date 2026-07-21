@@ -1,53 +1,39 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import type { ThemeType } from '../../types';
 import { getThemeColors } from '../../themes/themeConfig';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
+import ThemedComponent from '../ThemedComponent/ThemedComponent';
+import { withTheme } from '../../hoc/withTheme';
 import './App.css';
 
-interface AppState {
-  theme: ThemeType;
-}
+const ThemedComponentWrapped = withTheme(ThemedComponent);
 
-class App extends Component<{}, AppState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      theme: 'light',
-    };
-  }
+const App = () => {
+  const [theme, setTheme] = useState<ThemeType>('light');
+  const colors = getThemeColors(theme);
 
-  handleToggleTheme = (): void => {
-    this.setState((prevState) => ({
-      theme: prevState.theme === 'light' ? 'dark' : 'light',
-    }));
+  const handleToggleTheme = (): void => {
+    setTheme((prev: ThemeType) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  render() {
-    const { theme } = this.state;
-    const colors = getThemeColors(theme);
-
-    return (
-      <div 
-        className="app"
-        style={{
-          backgroundColor: colors.background,
-          color: colors.text,
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 0.3s ease',
-        }}
-      >
+  return (
+    <div 
+      className="app"
+      style={{
+        backgroundColor: colors.background,
+        color: colors.text,
+      }}
+    >
+      <div className="app__header">
         <h1 className="app__title">🎨 Управление темой</h1>
-        <ThemeToggle theme={theme} onToggle={this.handleToggleTheme} />
-        <p style={{ marginTop: '20px', opacity: 0.7 }}>
-          Текущая тема: <strong>{theme}</strong>
-        </p>
+        <ThemeToggle theme={theme} onToggle={handleToggleTheme} />
       </div>
-    );
-  }
-}
+
+      <div className="app__content">
+        <ThemedComponentWrapped theme={theme} />
+      </div>
+    </div>
+  );
+};
 
 export default App;
